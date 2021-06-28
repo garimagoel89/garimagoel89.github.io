@@ -1,0 +1,139 @@
+<html>
+   <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="theme-color" content="#ffffff">
+      <meta property="og:type" content="Game" />
+      <meta property="og:title" content="Random Alphabet - By Niket Goel" />
+      <meta property="og:description" content="Random Alphabet - By Niket Goel" />
+      <meta property="og:locale" content="en_US" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@_niketgoel" />
+      <title>Random Alphabet - By Niket Goel</title>
+   </head>
+   <body>
+      <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+         <div class="container">
+            <div>
+            	<h3 style="color:#fff;"><i>Random Alphabet - By Garima Goel</i></h3>
+            </div>
+         </div>
+      </nav>
+      <div class="well well-lg text-center">
+      	<div>
+      		<img src="https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-260nw-1727544364.jpg" id="numCounter" class="center">
+      	</div>
+      	<input id="btnGenerate" type="button" value="Generate Alphabet"/>
+      </div>
+      <style type="text/css">
+         body {
+         padding-top: 70px;
+         }
+         div {
+         text-align: center;
+         }
+         .center {
+         	display: block;
+         	margin-left: auto;
+         	margin-right: auto;
+         	width: 40%;
+         }
+      </style>
+      <script
+         src="https://code.jquery.com/jquery-3.2.1.min.js"
+         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+         crossorigin="anonymous"></script>
+      <script type="text/javascript">
+         var bingoNumberWords = ["Apple","Bananna","Cat","Dog","Elephant","Fish","Girl","Horse","Ice Cream","Joker","Kite","Lion","Monkey","Nose","Orange","Parrot","Queen","Rat","Sun Flower","Tiger","Umbrella","Van","Wolf","X-Mas","Yak","Zebra"];
+         var characterList = ["A","B","C","D","E","F","G","H","I","J", "K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+         var image_list = ["https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-260nw-1727544364.jpg",
+          "https://image.shutterstock.com/image-photo/bunch-bananas-isolated-on-white-260nw-1722111529.jpg",
+           "https://static.toiimg.com/thumb/msid-67586673,width-800,height-600,resizemode-75,imgsize-3918697,pt-32,y_pad-40/67586673.jpg"];
+             (function($){
+                 $.fn.extend({
+                     numAnim: function(options) {
+                         if ( ! this.length)
+                             return false;
+         
+                         this.defaults = {
+                             endAt: 2560,
+                             numClass: 'autogen-num',
+                             duration: 2,   // seconds
+                             interval: 90  // ms
+                         };
+                         var settings = $.extend({}, this.defaults, options);
+         
+                         var $num = $('<span/>', {
+                             'class': settings.numClass
+                         });
+         
+                         return this.each(function() {
+                             var $this = $(this);
+         
+                             // Wrap each number in a tag.
+                             var frag = document.createDocumentFragment(),
+                                 numLen = settings.endAt.toString().length;
+                             for (x = 0; x < numLen; x++) {
+                                 var rand_num = Math.floor( Math.random() * 10 );
+                                 frag.appendChild( $num.clone().text(rand_num)[0] )
+                             }
+                             $this.empty().append(frag);
+         
+                             var get_next_num = function(num) {
+                                 ++num;
+                                 if (num > 9) return 0;
+                                 return num;
+                             };
+         
+                             // Iterate each number.
+                             $this.find('.' + settings.numClass).each(function() {
+                                 var $num = $(this),
+                                     num = parseInt( $num.text() );
+         
+                                 var interval = setInterval( function() {
+                                     num = get_next_num(num);
+                                     $num.text(num);
+                                 }, settings.interval);
+         
+                                 setTimeout( function() {
+                                     clearInterval(interval);
+                                 }, settings.duration * 1000 - settings.interval);
+                             });
+         
+                             setTimeout( function() {
+                                 $this.text( settings.endAt.toString() );
+                                 $('#numCounter').css("display","");
+                             }, settings.duration * 1000);
+                         });
+                     }
+                 });
+             })(jQuery);
+                $(function() {
+                 var bingo = {
+                     generateRandom: function() {
+                         var min = 1;
+                         var max = image_list.length;
+                         var random = Math.floor(Math.random() * (max - min + 1)) + min;
+                         return random;
+                     }
+                 };
+                 var random = 0;
+                 $('#btnGenerate').click(function() {
+                     random = bingo.generateRandom().toString();
+                     console.log(random);
+                     console.log(image_list[random-1]);
+                     $('#numCounter').attr("src",image_list[random-1]);
+                 });
+                 window.onbeforeunload = function(e) {
+                     e = e || window.event;
+                     var returnString = 'Are you sure?';
+                     if (e) {
+                         e.returnValue = returnString;
+                     }
+                     return returnString;
+                 };
+             });
+      </script>
+   </body>
+</html>
